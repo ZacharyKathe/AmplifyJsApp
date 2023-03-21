@@ -6,10 +6,20 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
+import {
+  getOverrideProps,
+  useDataStoreCreateAction,
+} from "@aws-amplify/ui-react/internal";
+import { User } from "../models";
+import { schema } from "../models/schema";
 import { Text, View } from "@aws-amplify/ui-react";
 export default function Submitbutton(props) {
   const { overrides, ...rest } = props;
+  const rectangleOneTwoOnClick = useDataStoreCreateAction({
+    fields: {},
+    model: User,
+    schema: schema,
+  });
   return (
     <View
       width="317px"
@@ -21,7 +31,7 @@ export default function Submitbutton(props) {
       overflow="hidden"
       position="relative"
       padding="0px 0px 0px 0px"
-      backgroundColor="rgba(255,255,255,1)"
+      backgroundColor="rgba(96,95,95,1)"
       {...getOverrideProps(overrides, "Submitbutton")}
       {...rest}
     >
@@ -37,6 +47,9 @@ export default function Submitbutton(props) {
         left="30px"
         padding="0px 0px 0px 0px"
         backgroundColor="rgba(53,108,139,1)"
+        onClick={() => {
+          rectangleOneTwoOnClick();
+        }}
         {...getOverrideProps(overrides, "Rectangle 12")}
       ></View>
       <Text
@@ -61,6 +74,16 @@ export default function Submitbutton(props) {
         children="Submit"
         {...getOverrideProps(overrides, "Submit")}
       ></Text>
+      <View
+        width="317px"
+        height="71px"
+        {...getOverrideProps(overrides, "UserName")}
+      ></View>
+      <View
+        width="317px"
+        height="71px"
+        {...getOverrideProps(overrides, "Email")}
+      ></View>
     </View>
   );
 }

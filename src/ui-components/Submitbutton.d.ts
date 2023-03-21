@@ -12,6 +12,8 @@ export declare type SubmitbuttonOverridesProps = {
     Submitbutton?: PrimitiveOverrideProps<ViewProps>;
     "Rectangle 12"?: PrimitiveOverrideProps<ViewProps>;
     Submit?: PrimitiveOverrideProps<TextProps>;
+    UserName?: PrimitiveOverrideProps<ViewProps>;
+    Email?: PrimitiveOverrideProps<ViewProps>;
 } & EscapeHatchProps;
 export declare type SubmitbuttonProps = React.PropsWithChildren<Partial<ViewProps> & {
     overrides?: SubmitbuttonOverridesProps | undefined | null;
