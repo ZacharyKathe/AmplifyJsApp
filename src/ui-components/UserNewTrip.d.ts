@@ -12,34 +12,31 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type NewTripInputValues = {
+export declare type UserNewTripInputValues = {
     Destination?: string;
     LeaveDate?: string;
     HomeDate?: string;
-    TripName?: string;
 };
-export declare type NewTripValidationValues = {
+export declare type UserNewTripValidationValues = {
     Destination?: ValidationFunction<string>;
     LeaveDate?: ValidationFunction<string>;
     HomeDate?: ValidationFunction<string>;
-    TripName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type NewTripOverridesProps = {
-    NewTripGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type UserNewTripOverridesProps = {
+    UserNewTripGrid?: PrimitiveOverrideProps<GridProps>;
     Destination?: PrimitiveOverrideProps<TextFieldProps>;
     LeaveDate?: PrimitiveOverrideProps<TextFieldProps>;
     HomeDate?: PrimitiveOverrideProps<TextFieldProps>;
-    TripName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type NewTripProps = React.PropsWithChildren<{
-    overrides?: NewTripOverridesProps | undefined | null;
+export declare type UserNewTripProps = React.PropsWithChildren<{
+    overrides?: UserNewTripOverridesProps | undefined | null;
 } & {
     clearOnSuccess?: boolean;
-    onSubmit?: (fields: NewTripInputValues) => NewTripInputValues;
-    onSuccess?: (fields: NewTripInputValues) => void;
-    onError?: (fields: NewTripInputValues, errorMessage: string) => void;
-    onChange?: (fields: NewTripInputValues) => NewTripInputValues;
-    onValidate?: NewTripValidationValues;
+    onSubmit?: (fields: UserNewTripInputValues) => UserNewTripInputValues;
+    onSuccess?: (fields: UserNewTripInputValues) => void;
+    onError?: (fields: UserNewTripInputValues, errorMessage: string) => void;
+    onChange?: (fields: UserNewTripInputValues) => UserNewTripInputValues;
+    onValidate?: UserNewTripValidationValues;
 } & React.CSSProperties>;
-export default function NewTrip(props: NewTripProps): React.ReactElement;
+export default function UserNewTrip(props: UserNewTripProps): React.ReactElement;

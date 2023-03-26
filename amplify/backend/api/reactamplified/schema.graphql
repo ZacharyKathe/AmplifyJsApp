@@ -7,37 +7,29 @@ type GearTypeOption {
   Hunting: String
 }
 
-type Trip @model @auth(rules: [{allow: public}]) {
+type Trip @model @auth(rules: [{allow: public}, {allow: owner}]) {
   id: ID!
   Destination: String
   LeaveDate: AWSDate
   HomeDate: AWSDate
-  userID: ID! @index(name: "byUser")
   Packs: [Pack] @hasMany(indexName: "byTrip", fields: ["id"])
+  TripName: String
 }
 
-type GearItem @model @auth(rules: [{allow: public}]) {
+type GearItem @model @auth(rules: [{allow: public}, {allow: owner}]) {
   id: ID!
   Type: GearTypeOption
   Weight: Float
   packID: ID! @index(name: "byPack")
 }
 
-type Pack @model @auth(rules: [{allow: public}]) {
+type Pack @model @auth(rules: [{allow: public}, {allow: owner}]) {
   id: ID!
   name: String
   PackSize: Float
   PackType: String
-  userID: ID! @index(name: "byUser")
   Weight: Float
   GearItems: [GearItem] @hasMany(indexName: "byPack", fields: ["id"])
   tripID: ID! @index(name: "byTrip")
 }
-
-type User @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  UserName: String
-  Email: AWSEmail
-  Packs: [Pack] @hasMany(indexName: "byUser", fields: ["id"])
-  Trips: [Trip] @hasMany(indexName: "byUser", fields: ["id"])
-}
+ 

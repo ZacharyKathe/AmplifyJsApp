@@ -4,12 +4,11 @@ import { schema } from './schema';
 
 
 
-const { Trip, GearItem, Pack, User, GearTypeOption } = initSchema(schema);
+const { Trip, GearItem, Pack, GearTypeOption } = initSchema(schema);
 
 export {
   Trip,
   GearItem,
   Pack,
-  User,
   GearTypeOption
 };

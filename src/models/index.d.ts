@@ -35,8 +35,8 @@ type EagerTrip = {
   readonly Destination?: string | null;
   readonly LeaveDate?: string | null;
   readonly HomeDate?: string | null;
-  readonly userID: string;
   readonly Packs?: (Pack | null)[] | null;
+  readonly TripName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -50,8 +50,8 @@ type LazyTrip = {
   readonly Destination?: string | null;
   readonly LeaveDate?: string | null;
   readonly HomeDate?: string | null;
-  readonly userID: string;
   readonly Packs: AsyncCollection<Pack>;
+  readonly TripName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -103,7 +103,6 @@ type EagerPack = {
   readonly name?: string | null;
   readonly PackSize?: number | null;
   readonly PackType?: string | null;
-  readonly userID: string;
   readonly Weight?: number | null;
   readonly GearItems?: (GearItem | null)[] | null;
   readonly tripID: string;
@@ -120,7 +119,6 @@ type LazyPack = {
   readonly name?: string | null;
   readonly PackSize?: number | null;
   readonly PackType?: string | null;
-  readonly userID: string;
   readonly Weight?: number | null;
   readonly GearItems: AsyncCollection<GearItem>;
   readonly tripID: string;
@@ -132,38 +130,4 @@ export declare type Pack = LazyLoading extends LazyLoadingDisabled ? EagerPack :
 
 export declare const Pack: (new (init: ModelInit<Pack>) => Pack) & {
   copyOf(source: Pack, mutator: (draft: MutableModel<Pack>) => MutableModel<Pack> | void): Pack;
-}
-
-type EagerUser = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<User, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly UserName?: string | null;
-  readonly Email?: string | null;
-  readonly Packs?: (Pack | null)[] | null;
-  readonly Trips?: (Trip | null)[] | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyUser = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<User, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly UserName?: string | null;
-  readonly Email?: string | null;
-  readonly Packs: AsyncCollection<Pack>;
-  readonly Trips: AsyncCollection<Trip>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser
-
-export declare const User: (new (init: ModelInit<User>) => User) & {
-  copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }

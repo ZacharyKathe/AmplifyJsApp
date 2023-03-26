@@ -8,10 +8,10 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { User } from "../models";
+import { Trip } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function CreateUserZK(props) {
+export default function UserNewTrip(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -23,20 +23,26 @@ export default function CreateUserZK(props) {
     ...rest
   } = props;
   const initialValues = {
-    UserName: "",
-    Email: "",
+    Destination: "",
+    LeaveDate: "",
+    HomeDate: "",
   };
-  const [UserName, setUserName] = React.useState(initialValues.UserName);
-  const [Email, setEmail] = React.useState(initialValues.Email);
+  const [Destination, setDestination] = React.useState(
+    initialValues.Destination
+  );
+  const [LeaveDate, setLeaveDate] = React.useState(initialValues.LeaveDate);
+  const [HomeDate, setHomeDate] = React.useState(initialValues.HomeDate);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setUserName(initialValues.UserName);
-    setEmail(initialValues.Email);
+    setDestination(initialValues.Destination);
+    setLeaveDate(initialValues.LeaveDate);
+    setHomeDate(initialValues.HomeDate);
     setErrors({});
   };
   const validations = {
-    UserName: [],
-    Email: [{ type: "Email" }],
+    Destination: [],
+    LeaveDate: [],
+    HomeDate: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -64,8 +70,9 @@ export default function CreateUserZK(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          UserName,
-          Email,
+          Destination,
+          LeaveDate,
+          HomeDate,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -95,7 +102,7 @@ export default function CreateUserZK(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new User(modelFields));
+          await DataStore.save(new Trip(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -108,58 +115,88 @@ export default function CreateUserZK(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "CreateUserZK")}
+      {...getOverrideProps(overrides, "UserNewTrip")}
       {...rest}
     >
       <TextField
-        label="User name"
+        label="Destination"
         isRequired={false}
         isReadOnly={false}
-        value={UserName}
+        value={Destination}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              UserName: value,
-              Email,
+              Destination: value,
+              LeaveDate,
+              HomeDate,
             };
             const result = onChange(modelFields);
-            value = result?.UserName ?? value;
+            value = result?.Destination ?? value;
           }
-          if (errors.UserName?.hasError) {
-            runValidationTasks("UserName", value);
+          if (errors.Destination?.hasError) {
+            runValidationTasks("Destination", value);
           }
-          setUserName(value);
+          setDestination(value);
         }}
-        onBlur={() => runValidationTasks("UserName", UserName)}
-        errorMessage={errors.UserName?.errorMessage}
-        hasError={errors.UserName?.hasError}
-        {...getOverrideProps(overrides, "UserName")}
+        onBlur={() => runValidationTasks("Destination", Destination)}
+        errorMessage={errors.Destination?.errorMessage}
+        hasError={errors.Destination?.hasError}
+        {...getOverrideProps(overrides, "Destination")}
       ></TextField>
       <TextField
-        label="Email"
+        label="Leave date"
         isRequired={false}
         isReadOnly={false}
-        value={Email}
+        type="date"
+        value={LeaveDate}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              UserName,
-              Email: value,
+              Destination,
+              LeaveDate: value,
+              HomeDate,
             };
             const result = onChange(modelFields);
-            value = result?.Email ?? value;
+            value = result?.LeaveDate ?? value;
           }
-          if (errors.Email?.hasError) {
-            runValidationTasks("Email", value);
+          if (errors.LeaveDate?.hasError) {
+            runValidationTasks("LeaveDate", value);
           }
-          setEmail(value);
+          setLeaveDate(value);
         }}
-        onBlur={() => runValidationTasks("Email", Email)}
-        errorMessage={errors.Email?.errorMessage}
-        hasError={errors.Email?.hasError}
-        {...getOverrideProps(overrides, "Email")}
+        onBlur={() => runValidationTasks("LeaveDate", LeaveDate)}
+        errorMessage={errors.LeaveDate?.errorMessage}
+        hasError={errors.LeaveDate?.hasError}
+        {...getOverrideProps(overrides, "LeaveDate")}
+      ></TextField>
+      <TextField
+        label="Home date"
+        isRequired={false}
+        isReadOnly={false}
+        type="date"
+        value={HomeDate}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              Destination,
+              LeaveDate,
+              HomeDate: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.HomeDate ?? value;
+          }
+          if (errors.HomeDate?.hasError) {
+            runValidationTasks("HomeDate", value);
+          }
+          setHomeDate(value);
+        }}
+        onBlur={() => runValidationTasks("HomeDate", HomeDate)}
+        errorMessage={errors.HomeDate?.errorMessage}
+        hasError={errors.HomeDate?.hasError}
+        {...getOverrideProps(overrides, "HomeDate")}
       ></TextField>
       <Flex
         justifyContent="space-between"

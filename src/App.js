@@ -4,20 +4,17 @@ import './App.css';
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
 
-import Nav from "./Pages/Nav";
+import Nav from "./Nav";
 
-import {
-  NewTrip 
- } from './ui-components';
+import PortfolioContainer from './PortfolioContainer'
  
- 
+
+
 
 function App() {
   return (
     <div>
-    <Nav />
-      <NewTrip />
-    
+    <PortfolioContainer />
     </div>
 
         

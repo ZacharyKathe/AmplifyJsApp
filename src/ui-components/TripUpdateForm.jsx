@@ -11,9 +11,10 @@ import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Trip } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function NewTrip(props) {
+export default function TripUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    trip,
     onSuccess,
     onError,
     onSubmit,
@@ -36,12 +37,24 @@ export default function NewTrip(props) {
   const [TripName, setTripName] = React.useState(initialValues.TripName);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setDestination(initialValues.Destination);
-    setLeaveDate(initialValues.LeaveDate);
-    setHomeDate(initialValues.HomeDate);
-    setTripName(initialValues.TripName);
+    const cleanValues = tripRecord
+      ? { ...initialValues, ...tripRecord }
+      : initialValues;
+    setDestination(cleanValues.Destination);
+    setLeaveDate(cleanValues.LeaveDate);
+    setHomeDate(cleanValues.HomeDate);
+    setTripName(cleanValues.TripName);
     setErrors({});
   };
+  const [tripRecord, setTripRecord] = React.useState(trip);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp ? await DataStore.query(Trip, idProp) : trip;
+      setTripRecord(record);
+    };
+    queryData();
+  }, [idProp, trip]);
+  React.useEffect(resetStateValues, [tripRecord]);
   const validations = {
     Destination: [],
     LeaveDate: [],
@@ -107,12 +120,13 @@ export default function NewTrip(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Trip(modelFields));
+          await DataStore.save(
+            Trip.copyOf(tripRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -120,7 +134,7 @@ export default function NewTrip(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "NewTrip")}
+      {...getOverrideProps(overrides, "TripUpdateForm")}
       {...rest}
     >
       <TextField
@@ -238,13 +252,14 @@ export default function NewTrip(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || trip)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -254,7 +269,10 @@ export default function NewTrip(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || trip) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

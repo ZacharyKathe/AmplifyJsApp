@@ -10,6 +10,7 @@ import awsconfig from './aws-exports';
 
 import "@aws-amplify/ui-react/styles.css";
 import { studioTheme } from "./ui-components";
+import './App.css';
 
 Amplify.configure(awsconfig);
 

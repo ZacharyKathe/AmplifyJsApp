@@ -8,10 +8,10 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { User } from "../models";
+import { Pack } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function UserCreateForm(props) {
+export default function NewPack(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -23,20 +23,28 @@ export default function UserCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    UserName: "",
-    Email: "",
+    name: "",
+    PackSize: "",
+    PackType: "",
+    Weight: "",
   };
-  const [UserName, setUserName] = React.useState(initialValues.UserName);
-  const [Email, setEmail] = React.useState(initialValues.Email);
+  const [name, setName] = React.useState(initialValues.name);
+  const [PackSize, setPackSize] = React.useState(initialValues.PackSize);
+  const [PackType, setPackType] = React.useState(initialValues.PackType);
+  const [Weight, setWeight] = React.useState(initialValues.Weight);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setUserName(initialValues.UserName);
-    setEmail(initialValues.Email);
+    setName(initialValues.name);
+    setPackSize(initialValues.PackSize);
+    setPackType(initialValues.PackType);
+    setWeight(initialValues.Weight);
     setErrors({});
   };
   const validations = {
-    UserName: [],
-    Email: [{ type: "Email" }],
+    name: [],
+    PackSize: [],
+    PackType: [],
+    Weight: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -64,8 +72,10 @@ export default function UserCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          UserName,
-          Email,
+          name,
+          PackSize,
+          PackType,
+          Weight,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -95,7 +105,7 @@ export default function UserCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new User(modelFields));
+          await DataStore.save(new Pack(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -108,58 +118,124 @@ export default function UserCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "UserCreateForm")}
+      {...getOverrideProps(overrides, "NewPack")}
       {...rest}
     >
       <TextField
-        label="User name"
+        label="Name"
         isRequired={false}
         isReadOnly={false}
-        value={UserName}
+        value={name}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              UserName: value,
-              Email,
+              name: value,
+              PackSize,
+              PackType,
+              Weight,
             };
             const result = onChange(modelFields);
-            value = result?.UserName ?? value;
+            value = result?.name ?? value;
           }
-          if (errors.UserName?.hasError) {
-            runValidationTasks("UserName", value);
+          if (errors.name?.hasError) {
+            runValidationTasks("name", value);
           }
-          setUserName(value);
+          setName(value);
         }}
-        onBlur={() => runValidationTasks("UserName", UserName)}
-        errorMessage={errors.UserName?.errorMessage}
-        hasError={errors.UserName?.hasError}
-        {...getOverrideProps(overrides, "UserName")}
+        onBlur={() => runValidationTasks("name", name)}
+        errorMessage={errors.name?.errorMessage}
+        hasError={errors.name?.hasError}
+        {...getOverrideProps(overrides, "name")}
       ></TextField>
       <TextField
-        label="Email"
+        label="Pack size"
         isRequired={false}
         isReadOnly={false}
-        value={Email}
+        type="number"
+        step="any"
+        value={PackSize}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              PackSize: value,
+              PackType,
+              Weight,
+            };
+            const result = onChange(modelFields);
+            value = result?.PackSize ?? value;
+          }
+          if (errors.PackSize?.hasError) {
+            runValidationTasks("PackSize", value);
+          }
+          setPackSize(value);
+        }}
+        onBlur={() => runValidationTasks("PackSize", PackSize)}
+        errorMessage={errors.PackSize?.errorMessage}
+        hasError={errors.PackSize?.hasError}
+        {...getOverrideProps(overrides, "PackSize")}
+      ></TextField>
+      <TextField
+        label="Pack type"
+        isRequired={false}
+        isReadOnly={false}
+        value={PackType}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              UserName,
-              Email: value,
+              name,
+              PackSize,
+              PackType: value,
+              Weight,
             };
             const result = onChange(modelFields);
-            value = result?.Email ?? value;
+            value = result?.PackType ?? value;
           }
-          if (errors.Email?.hasError) {
-            runValidationTasks("Email", value);
+          if (errors.PackType?.hasError) {
+            runValidationTasks("PackType", value);
           }
-          setEmail(value);
+          setPackType(value);
         }}
-        onBlur={() => runValidationTasks("Email", Email)}
-        errorMessage={errors.Email?.errorMessage}
-        hasError={errors.Email?.hasError}
-        {...getOverrideProps(overrides, "Email")}
+        onBlur={() => runValidationTasks("PackType", PackType)}
+        errorMessage={errors.PackType?.errorMessage}
+        hasError={errors.PackType?.hasError}
+        {...getOverrideProps(overrides, "PackType")}
+      ></TextField>
+      <TextField
+        label="Weight"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={Weight}
+        onChange={(e) => {
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              PackSize,
+              PackType,
+              Weight: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.Weight ?? value;
+          }
+          if (errors.Weight?.hasError) {
+            runValidationTasks("Weight", value);
+          }
+          setWeight(value);
+        }}
+        onBlur={() => runValidationTasks("Weight", Weight)}
+        errorMessage={errors.Weight?.errorMessage}
+        hasError={errors.Weight?.hasError}
+        {...getOverrideProps(overrides, "Weight")}
       ></TextField>
       <Flex
         justifyContent="space-between"

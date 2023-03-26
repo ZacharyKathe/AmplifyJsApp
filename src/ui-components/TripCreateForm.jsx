@@ -11,7 +11,7 @@ import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Trip } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function NewTrip(props) {
+export default function TripCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -120,7 +120,7 @@ export default function NewTrip(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "NewTrip")}
+      {...getOverrideProps(overrides, "TripCreateForm")}
       {...rest}
     >
       <TextField

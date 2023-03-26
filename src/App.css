@@ -1,5 +1,11 @@
-.Nav {
-  background-color: #146d26b5;
-  display: flex;
-  justify-content: space-between;
-};
+.NavDiv {
+    background-color: rgba(7, 85, 7, 0.577);
+    display: flex;
+    justify-content: space-around;
+    height: 10vh;
+    align-items: center;
+}
+
+.amplify-collection-items {
+    align-items: center;
+}

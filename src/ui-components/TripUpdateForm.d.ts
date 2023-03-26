@@ -7,39 +7,41 @@
 import * as React from "react";
 import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+import { Trip } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type NewTripInputValues = {
+export declare type TripUpdateFormInputValues = {
     Destination?: string;
     LeaveDate?: string;
     HomeDate?: string;
     TripName?: string;
 };
-export declare type NewTripValidationValues = {
+export declare type TripUpdateFormValidationValues = {
     Destination?: ValidationFunction<string>;
     LeaveDate?: ValidationFunction<string>;
     HomeDate?: ValidationFunction<string>;
     TripName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type NewTripOverridesProps = {
-    NewTripGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type TripUpdateFormOverridesProps = {
+    TripUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     Destination?: PrimitiveOverrideProps<TextFieldProps>;
     LeaveDate?: PrimitiveOverrideProps<TextFieldProps>;
     HomeDate?: PrimitiveOverrideProps<TextFieldProps>;
     TripName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type NewTripProps = React.PropsWithChildren<{
-    overrides?: NewTripOverridesProps | undefined | null;
+export declare type TripUpdateFormProps = React.PropsWithChildren<{
+    overrides?: TripUpdateFormOverridesProps | undefined | null;
 } & {
-    clearOnSuccess?: boolean;
-    onSubmit?: (fields: NewTripInputValues) => NewTripInputValues;
-    onSuccess?: (fields: NewTripInputValues) => void;
-    onError?: (fields: NewTripInputValues, errorMessage: string) => void;
-    onChange?: (fields: NewTripInputValues) => NewTripInputValues;
-    onValidate?: NewTripValidationValues;
+    id?: string;
+    trip?: Trip;
+    onSubmit?: (fields: TripUpdateFormInputValues) => TripUpdateFormInputValues;
+    onSuccess?: (fields: TripUpdateFormInputValues) => void;
+    onError?: (fields: TripUpdateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: TripUpdateFormInputValues) => TripUpdateFormInputValues;
+    onValidate?: TripUpdateFormValidationValues;
 } & React.CSSProperties>;
-export default function NewTrip(props: NewTripProps): React.ReactElement;
+export default function TripUpdateForm(props: TripUpdateFormProps): React.ReactElement;
